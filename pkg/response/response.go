@@ -18,8 +18,9 @@ func JSON(w http.ResponseWriter, statusCode int, data interface{}) {
 	w.WriteHeader(statusCode)
 
 	if err := json.NewEncoder(w).Encode(data); err != nil {
-		// If encoding fails, try to write a simple error message
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		// If encoding fails, headers are already sent - nothing we can do
+		// In production, this should be logged for monitoring
+		_ = err
 	}
 }
 
